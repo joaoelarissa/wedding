@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>João & Larissa — Casamento</title>
+  <meta name="description" content="Site do casamento — informações e novidades." />
+
+  <style>
+    :root{
+      --bg: #0f0f12;
+      --text: #ffffff;
+      --muted: rgba(255,255,255,.72);
+      --card: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.14);
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 980px;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Mobile-first layout */
+    .wrap{
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 18px;
+    }
+
+    /* HERO */
+    .hero{
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: end center;
+      padding: 18px 0 22px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero__media{
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      transform: translate3d(0,0,0);
+      will-change: transform;
+    }
+
+    .hero__img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: saturate(1.05) contrast(1.02);
+      transform: scale(1.06);
+      will-change: transform;
+    }
+
+    /* Soft overlays to keep text readable */
+    .hero::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1200px 800px at 50% 20%, rgba(0,0,0,0) 0%, rgba(0,0,0,.22) 40%, rgba(0,0,0,.55) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,.10) 0%, rgba(0,0,0,.65) 85%, rgba(0,0,0,.85) 100%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .hero__content{
+      width: 100%;
+      padding: 0 18px;
+    }
+
+    .hero__card{
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      background: rgba(0,0,0,.32);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 14px 14px 12px;
+    }
+
+    .hero__title{
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: .3px;
+      text-align: center;
+    }
+
+    .hero__subtitle{
+      margin: 6px 0 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: .98rem;
+    }
+
+    .scroll-indicator{
+      display: grid;
+      place-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      color: rgba(255,255,255,.85);
+      user-select: none;
+    }
+
+    .scroll-indicator__pill{
+      height: 34px;
+      width: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.45);
+      position: relative;
+      background: rgba(255,255,255,.04);
+      overflow: hidden;
+    }
+
+    .scroll-indicator__dot{
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,.9);
+      border-radius: 999px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 8px;
+      animation: wheel 1.6s infinite;
+    }
+
+    @keyframes wheel{
+      0%{ opacity: 0; transform: translate(-50%, -2px); }
+      25%{ opacity: 1; }
+      80%{ opacity: 1; transform: translate(-50%, 12px); }
+      100%{ opacity: 0; transform: translate(-50%, 14px); }
+    }
+
+    /* MAIN */
+    main{
+      padding: 26px 0 70px;
+    }
+
+    .section{
+      margin: 18px 0;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    .h2{
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      letter-spacing: .2px;
+    }
+
+    .p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .grid{
+      display: grid;
+      gap: 14px;
+    }
+
+    /* Scroll reveal base (JS will toggle .is-visible) */
+    .reveal{
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 700ms ease, transform 700ms ease;
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-visible{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Desktop-ish tweaks */
+    @media (min-width: 680px){
+      .wrap{ padding: 0 24px; }
+      .hero__title{ font-size: 1.7rem; }
+      .hero__subtitle{ font-size: 1.05rem; }
+      .grid{ grid-template-columns: 1fr 1fr; }
+      .hero__card{ padding: 18px 18px 14px; }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .reveal{ transition: none; }
+      .scroll-indicator__dot{ animation: none; }
+      .hero__media, .hero__img{ transform: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- PRIMEIRO ITEM: a foto do Save the Date ocupando a primeira tela -->
+  <header class="hero" aria-label="Capa do casamento">
+    <div class="hero__media" aria-hidden="true">
+      <img class="hero__img" src="src/Save the Date.jpg" alt="Save the Date" />
+    </div>
+
+    <div class="hero__content">
+      <div class="hero__card reveal">
+        <h1 class="hero__title">João &amp; Larissa</h1>
+        <p class="hero__subtitle">12.09.2026 • Nosso casamento</p>
+
+        <div class="scroll-indicator" aria-hidden="true">
+          <div class="scroll-indicator__pill"><span class="scroll-indicator__dot"></span></div>
+          <small style="opacity:.85">role para ver mais</small>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo abaixo (você vai preenchendo depois) -->
+  <main>
+    <div class="wrap">
+      <section class="section reveal" id="conteudo">
+        <div class="card">
+          <h2 class="h2">Bem-vindos 💛</h2>
+          <p class="p">Aqui vamos colocar todas as informações: cerimônia, recepção, presentes, confirmação e novidades.</p>
+        </div>
+      </section>
+
+      <section class="section grid">
+        <div class="card reveal">
+          <h2 class="h2">Cerimônia</h2>
+          <p class="p">(placeholder) Depois a gente adiciona horário e endereço.</p>
+        </div>
+        <div class="card reveal">
+          <h2 class="h2">Recepção</h2>
+          <p class="p">(placeholder) Depois a gente adiciona mapa e dicas.</p>
+        </div>
+      </section>
+
+      <section class="section reveal">
+        <div class="card">
+          <h2 class="h2">Conteúdo extra</h2>
+          <p class="p">(placeholder) Mais seções podem entrar aqui: RSVP, lista de presentes, dress code, etc.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Scroll effect 1: Parallax suave no hero (imagem acompanha a rolagem)
+    (function(){
+      const media = document.querySelector('.hero__media');
+      const img = document.querySelector('.hero__img');
+      if (!media || !img) return;
+
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+
+      const onScroll = () => {
+        const y = window.scrollY || 0;
+        // Parallax leve: move o container e ajusta escala mínima para evitar bordas
+        media.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
+        img.style.transform = `scale(1.06) translate3d(0, ${y * 0.06}px, 0)`;
+      };
+
+      // rAF para suavizar
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            onScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      onScroll();
+    })();
+
+    // Scroll effect 2: Reveal (elementos aparecem conforme entram na tela)
+    (function(){
+      const items = document.querySelectorAll('.reveal');
+      if (!items.length) return;
+
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        items.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      items.forEach(el => io.observe(el));
+    })();
+  </script>
+</body>
+</html>
