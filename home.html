@@ -193,6 +193,23 @@
       .hero__content{ padding-top: 26vh; }
     }
 
+    /* Mobile: bring overlay down, card up, and scale typography */
+    @media (max-width: 520px){
+      .hero-overlay{ padding-top: 9vh; }
+      .hero__content{ padding-top: 7vh; }
+
+      .hero__title{ font-size: 2.15rem; }
+      .hero__subtitle{ font-size: 1.3rem; }
+    }
+
+    @media (max-width: 380px){
+      .hero-overlay{ padding-top: 10vh; }
+      .hero__content{ padding-top: 6vh; }
+
+      .hero__title{ font-size: 2.0rem; }
+      .hero__subtitle{ font-size: 1.22rem; }
+    }
+
     /* Tall screens (fullscreen desktop): center the composition vertically */
     @media (min-height: 900px){
       .hero-overlay{ padding-top: 9vh; }
