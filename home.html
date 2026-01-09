@@ -7,10 +7,29 @@
   <meta name="description" content="Site do casamento — informações e novidades." />
 
   <style>
+    /* Custom Wedding Font */
+    @font-face {
+      font-family: 'BrownSugar';
+      src:
+        url('fonts/BrownSugar.ttf') format('truetype'),
+        url('fonts/BrownSugar.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'LianaRegular';
+      src: url('fonts/LianaRegular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root{
       --bg: #0f0f12;
-      --text: #ffffff;
-      --muted: rgba(255,255,255,.72);
+      --text: #fffbf2;
+      --muted: rgba(255,251,242,.72);
       --card: rgba(255,255,255,.08);
       --stroke: rgba(255,255,255,.14);
       --shadow: 0 12px 40px rgba(0,0,0,.35);
@@ -84,6 +103,7 @@
     .hero__content{
       width: 100%;
       padding: 0 18px;
+      padding-top: 20vh;
     }
 
     .hero__card{
@@ -104,6 +124,8 @@
       font-size: 1.35rem;
       letter-spacing: .3px;
       text-align: center;
+      font-family: 'LianaRegular', serif;
+      font-synthesis: none;
     }
 
     .hero__subtitle{
@@ -111,6 +133,7 @@
       text-align: center;
       color: var(--muted);
       font-size: .98rem;
+      font-family: 'BrownSugar', serif;
     }
 
     .scroll-indicator{
@@ -149,6 +172,91 @@
       25%{ opacity: 1; }
       80%{ opacity: 1; transform: translate(-50%, 12px); }
       100%{ opacity: 0; transform: translate(-50%, 14px); }
+    }
+
+    /* COUNTDOWN (floating over the photo) */
+    .hero-overlay{
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 5vh;
+      gap: clamp(10px, 2.6vh, 24px);
+    }
+
+    @media (max-height: 700px){
+      .hero-overlay{ padding-top: 3vh; }
+      .hero__content{ padding-top: 26vh; }
+    }
+
+    /* Tall screens (fullscreen desktop): center the composition vertically */
+    @media (min-height: 900px){
+      .hero-overlay{ padding-top: 9vh; }
+      .hero__content{ padding-top: 16vh; }
+    }
+
+    @media (min-height: 1050px){
+      .hero-overlay{ padding-top: 10vh; }
+      .hero__content{ padding-top: 14vh; }
+    }
+
+    .countdown-float{
+      width: min(960px, calc(100% - 36px));
+      display: flex;
+      justify-content: center;
+      gap: clamp(18px, 6vw, 110px);
+      align-items: flex-end;
+      text-align: center;
+      padding: 8px 0 0;
+    }
+
+    .hero-logo{
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .hero-logo img{
+      width: clamp(150px, 34vw, 280px);
+      height: auto;
+      filter: drop-shadow(0 10px 28px rgba(0,0,0,.55));
+    }
+
+    .countdown-float__item{
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      min-width: 64px;
+    }
+
+    .countdown-float__num{
+      font-family: 'BrownSugar', serif;
+      font-weight: 300;
+      font-size: clamp(56px, 14vw, 132px);
+      line-height: .9;
+      letter-spacing: .5px;
+      color: rgba(255,255,255,.96);
+      text-shadow: 0 10px 28px rgba(0,0,0,.55);
+    }
+
+    .countdown-float__label{
+      font-family: 'BrownSugar', serif;
+      font-size: clamp(16px, 3.6vw, 24px);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.85);
+      text-shadow: 0 10px 28px rgba(0,0,0,.55);
+    }
+
+    /* hide the old note text (we'll keep a small note inside the card) */
+    .countdown__note{ display: none; }
+
+    @media (min-width: 680px){
+      .countdown-float{ padding-top: 6px; }
     }
 
     /* MAIN */
@@ -220,13 +328,39 @@
   <!-- PRIMEIRO ITEM: a foto do Save the Date ocupando a primeira tela -->
   <header class="hero" aria-label="Capa do casamento">
     <div class="hero__media" aria-hidden="true">
-      <img class="hero__img" src="src/Save the Date.jpg" alt="Save the Date" />
+      <img class="hero__img" src="src/bg.png" alt="Save the Date" />
+    </div>
+
+    <div class="hero-overlay" aria-hidden="true">
+      <div class="hero-logo">
+        <img src="src/Logo_negativo.png" alt="João e Larissa - Logo do casamento" />
+      </div>
+
+      <div class="countdown-float" id="countdown" role="group" aria-label="Contagem regressiva para o casamento">
+        <div class="countdown-float__item">
+          <span class="countdown-float__num" data-unit="days">—</span>
+          <span class="countdown-float__label">DIAS</span>
+        </div>
+        <div class="countdown-float__item">
+          <span class="countdown-float__num" data-unit="hours">—</span>
+          <span class="countdown-float__label">HORAS</span>
+        </div>
+        <div class="countdown-float__item">
+          <span class="countdown-float__num" data-unit="minutes">—</span>
+          <span class="countdown-float__label">MIN</span>
+        </div>
+        <div class="countdown-float__item">
+          <span class="countdown-float__num" data-unit="seconds">—</span>
+          <span class="countdown-float__label">SEG</span>
+        </div>
+      </div>
     </div>
 
     <div class="hero__content">
       <div class="hero__card reveal">
         <h1 class="hero__title">João &amp; Larissa</h1>
-        <p class="hero__subtitle">12.09.2026 • Nosso casamento</p>
+        <p class="hero__subtitle">12.09.2026</p>
+        <p class="countdown__note" id="countdownNote" aria-live="polite">Contagem regressiva para 12.09.2026</p>
 
         <div class="scroll-indicator" aria-hidden="true">
           <div class="scroll-indicator__pill"><span class="scroll-indicator__dot"></span></div>
@@ -296,6 +430,56 @@
       }, { passive: true });
 
       onScroll();
+    })();
+
+    // Countdown: contagem regressiva para 12/09/2026 (fuso America/Sao_Paulo -03:00)
+    (function(){
+      const root = document.getElementById('countdown');
+      const note = document.getElementById('countdownNote');
+      if (!root) return;
+
+      const els = {
+        days: root.querySelector('[data-unit="days"]'),
+        hours: root.querySelector('[data-unit="hours"]'),
+        minutes: root.querySelector('[data-unit="minutes"]'),
+        seconds: root.querySelector('[data-unit="seconds"]'),
+      };
+
+      // 12 de setembro de 2026, 00:00 no horário de Brasília (-03:00)
+      const target = new Date('2026-09-12T11:00:00-03:00');
+
+      const pad2 = (n) => String(n).padStart(2, '0');
+
+      function render(){
+        const now = new Date();
+        let diff = target.getTime() - now.getTime();
+
+        if (diff <= 0){
+          // Já chegou (ou passou) — zera e muda mensagem
+          if (els.days) els.days.textContent = '0';
+          if (els.hours) els.hours.textContent = '00';
+          if (els.minutes) els.minutes.textContent = '00';
+          if (els.seconds) els.seconds.textContent = '00';
+          if (note) note.textContent = 'Chegou o grande dia! 💛';
+          return;
+        }
+
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        if (els.days) els.days.textContent = String(days);
+        if (els.hours) els.hours.textContent = pad2(hours);
+        if (els.minutes) els.minutes.textContent = pad2(minutes);
+        if (els.seconds) els.seconds.textContent = pad2(seconds);
+
+        if (note) note.textContent = 'Contagem regressiva para 12.09.2026';
+      }
+
+      render();
+      setInterval(render, 1000);
     })();
 
     // Scroll effect 2: Reveal (elementos aparecem conforme entram na tela)
