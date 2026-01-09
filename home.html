@@ -253,7 +253,7 @@
     .countdown-float__num{
       font-family: 'BrownSugar', serif;
       font-weight: 300;
-      font-size: clamp(56px, 14vw, 132px);
+      font-size: clamp(53px, 14vw, 132px);
       line-height: .9;
       letter-spacing: .5px;
       color: rgba(255,255,255,.96);
@@ -262,7 +262,7 @@
 
     .countdown-float__label{
       font-family: 'BrownSugar', serif;
-      font-size: clamp(16px, 3.6vw, 24px);
+      font-size: clamp(12px, 3.6vw, 24px);
       letter-spacing: 2px;
       text-transform: uppercase;
       color: rgba(255,255,255,.85);
@@ -278,11 +278,40 @@
 
     /* MAIN */
     main{
+      position: relative;
       padding: 26px 0 70px;
+      background: url('src/bg2.png') center / cover no-repeat;
+      background-attachment: fixed;
+    }
+
+    /* iOS/Android: fixed backgrounds can be janky */
+    @media (max-width: 680px){
+      main{ background-attachment: scroll; }
+    }
+
+    .site-sections{
+      position: relative;
+      padding: 26px 0 70px;
+      background: url('src/bg2.png') center / cover no-repeat;
+      background-attachment: fixed;
+    }
+
+    @media (max-width: 680px){
+      .site-sections{ background-attachment: scroll; }
     }
 
     .section{
       margin: 18px 0;
+    }
+
+    /* Mobile: reduce the gap between the video block and the next section */
+    @media (max-width: 680px){
+      main#inicio{ padding-bottom: 10px; }
+      .site-sections{ padding-top: 10px; }
+
+      /* tighten the first content card spacing */
+      .site-sections .section:first-child{ margin-top: 10px; }
+      main#inicio .section{ margin-bottom: 10px; }
     }
 
     .card{
@@ -310,6 +339,78 @@
       gap: 14px;
     }
 
+    /* VIDEO SECTION */
+    .video-card{
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .video-header{
+      padding: 14px 16px 10px;
+    }
+
+    .video-title{
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: .2px;
+    }
+
+    .video-sub{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .video-wrap{
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: rgba(0,0,0,.35);
+    }
+
+    .video-wrap video{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .unmute-btn{
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 2;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.45);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: .92rem;
+      letter-spacing: .2px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+
+    .unmute-btn:active{ transform: translateY(1px); }
+
+    .unmute-icon{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,251,242,.92);
+      box-shadow: 0 0 0 3px rgba(255,251,242,.18);
+    }
+
     /* Scroll reveal base (JS will toggle .is-visible) */
     .reveal{
       opacity: 0;
@@ -329,7 +430,7 @@
       .hero__title{ font-size: 1.7rem; }
       .hero__subtitle{ font-size: 1.05rem; }
       .grid{ grid-template-columns: 1fr 1fr; }
-      .hero__card{ padding: 18px 18px 14px; }
+      .hero__card{ padding: 10px 10px 10px; }
     }
 
     /* Respect reduced motion */
@@ -364,11 +465,11 @@
         </div>
         <div class="countdown-float__item">
           <span class="countdown-float__num" data-unit="minutes">—</span>
-          <span class="countdown-float__label">MIN</span>
+          <span class="countdown-float__label">MINUTOS</span>
         </div>
         <div class="countdown-float__item">
           <span class="countdown-float__num" data-unit="seconds">—</span>
-          <span class="countdown-float__label">SEG</span>
+          <span class="countdown-float__label">SEGUNDOS</span>
         </div>
       </div>
     </div>
@@ -387,8 +488,36 @@
     </div>
   </header>
 
+  <!-- Vídeo do casal (autoplay, loop, com botão para ativar som) -->
+  <main id="inicio">
+    <div class="wrap">
+      <section class="section reveal" id="video">
+        <div class="video-card">
+          <div class="video-header">
+            <h2 class="video-title">Uma mensagem nossa 💛</h2>
+            <p class="video-sub">(placeholder) Depois vocês colocam aqui uma frase curta ou deixam sem texto.</p>
+          </div>
+
+          <div class="video-wrap">
+            <video id="coupleVideo" autoplay loop muted playsinline preload="metadata" poster="src/bg2.png">
+              <!-- Trocar os arquivos abaixo pelos vídeos finais -->
+              <source src="https://pub-6b4c7adb861449389e3246ce4c22ebf7.r2.dev/teste.mp4" type="video/mp4" />
+              <!-- <source src="https://.../video.webm" type="video/webm" /> -->
+              Seu navegador não suporta vídeo.
+            </video>
+
+            <button class="unmute-btn" id="unmuteBtn" type="button" aria-label="Ativar/Desativar som do vídeo">
+              <span class="unmute-icon" aria-hidden="true"></span>
+              <span id="unmuteLabel">Ativar som</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
   <!-- Conteúdo abaixo (você vai preenchendo depois) -->
-  <main>
+  <section class="site-sections">
     <div class="wrap">
       <section class="section reveal" id="conteudo">
         <div class="card">
@@ -415,7 +544,7 @@
         </div>
       </section>
     </div>
-  </main>
+  </section>
 
   <script>
     // Scroll effect 1: Parallax suave no hero (imagem acompanha a rolagem)
@@ -497,6 +626,78 @@
 
       render();
       setInterval(render, 1000);
+    })();
+
+    // Video: toca uma vez com som; ao terminar volta para loop mutado (desktop + mobile)
+    (function(){
+      const video = document.getElementById('coupleVideo');
+      const btn = document.getElementById('unmuteBtn');
+      const label = document.getElementById('unmuteLabel');
+      if (!video || !btn || !label) return;
+
+      // Estado inicial: muted + loop (visual)
+      video.muted = true;
+      video.loop = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('loop', '');
+
+      function setUI(){
+        if (video.muted){
+          label.textContent = 'Ativar som';
+          btn.setAttribute('aria-label', 'Ativar som do vídeo');
+        } else {
+          label.textContent = 'Desativar som';
+          btn.setAttribute('aria-label', 'Desativar som do vídeo');
+        }
+      }
+
+      // Ao terminar a mensagem, sempre volta para o loop mutado
+      video.addEventListener('ended', () => {
+        // Force return to muted looping visual
+        video.muted = true;
+        video.loop = true;
+        video.setAttribute('muted', '');
+        video.setAttribute('loop', '');
+
+        // Restart from beginning to ensure loop resumes
+        video.currentTime = 0;
+        video.play().catch(() => {});
+
+        setUI();
+      });
+
+      btn.addEventListener('click', async () => {
+        try {
+          if (video.muted){
+            // Desmutar => tocar UMA vez (sem loop) do começo
+            video.muted = false;
+            video.loop = false;
+            video.removeAttribute('loop');
+            video.removeAttribute('muted');
+            video.currentTime = 0;
+            video.volume = 1;
+            await video.play();
+          } else {
+            // Mutar de novo => voltar para loop visual
+            video.muted = true;
+            video.loop = true;
+            video.setAttribute('muted', '');
+            video.setAttribute('loop', '');
+            await video.play();
+          }
+        } catch (e) {
+          // fallback seguro
+          video.muted = true;
+          video.loop = true;
+          video.setAttribute('muted', '');
+          video.setAttribute('loop', '');
+        }
+        setUI();
+      });
+
+      // Garante autoplay mutado
+      video.play().catch(() => {});
+      setUI();
     })();
 
     // Scroll effect 2: Reveal (elementos aparecem conforme entram na tela)
