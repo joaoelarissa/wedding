@@ -26,6 +26,22 @@
       font-display: swap;
     }
 
+    @font-face {
+      font-family: 'Pompiere';
+      src: url('fonts/Pompiere-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Handsome';
+      src: url('fonts/handsome-regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root{
       --bg: #0f0f12;
       --text: #fffbf2;
@@ -42,7 +58,8 @@
     body{
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: var(--bg);
+      background: var(--bg) url('src/bg.png') center / cover no-repeat fixed;
+      background-attachment: fixed;
       color: var(--text);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
@@ -75,6 +92,7 @@
       z-index: -2;
       transform: translate3d(0,0,0);
       will-change: transform;
+      display: none;
     }
 
     .hero__img{
@@ -277,28 +295,50 @@
     }
 
     /* MAIN */
-    main{
-      position: relative;
-      padding: 26px 0 70px;
-      background: url('src/bg2.png') center / cover no-repeat;
-      background-attachment: fixed;
-    }
+main{
+  position: relative;
+  padding: 26px 0 70px;
+  background: transparent;
+  isolation: isolate;
+}
+
+main::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(8, 8, 12, .46);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  pointer-events: none;
+}
 
     /* iOS/Android: fixed backgrounds can be janky */
-    @media (max-width: 680px){
-      main{ background-attachment: scroll; }
-    }
+@media (max-width: 680px){
+  body{ background-attachment: scroll; }
+  main{ background: transparent; }
+  main::before{ backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .site-sections{ background: transparent; }
+  .site-sections::before{ backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+}
 
-    .site-sections{
-      position: relative;
-      padding: 26px 0 70px;
-      background: url('src/bg2.png') center / cover no-repeat;
-      background-attachment: fixed;
-    }
+.site-sections{
+  position: relative;
+  padding: 26px 0 70px;
+  background: transparent;
+  isolation: isolate;
+}
 
-    @media (max-width: 680px){
-      .site-sections{ background-attachment: scroll; }
-    }
+.site-sections::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(8, 8, 12, .46);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  pointer-events: none;
+}
 
     .section{
       margin: 18px 0;
@@ -320,6 +360,257 @@
       border-radius: var(--radius);
       padding: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      overflow: hidden;
+    }
+
+    .section-banner{
+      position: relative;
+      width: calc(100% + 32px);
+      margin: -16px -16px 0;
+      min-height: 280px;
+      background: url('src/fundo-banner.png') center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 34px 28px 24px;
+      overflow: hidden;
+      color: #8f69aa;
+    }
+
+    .gift-banner{
+      position: relative;
+      width: 100%;
+      text-align: center;
+      color: #8f69aa;
+      z-index: 1;
+    }
+
+    .gift-banner__title{
+      margin: 0 0 14px;
+      font-family: 'BrownSugar', serif;
+      font-size: clamp(2.5rem, 4.6vw, 4rem);
+      line-height: .95;
+      font-weight: normal;
+      color: #8f69aa;
+    }
+
+    .gift-banner__line{
+      margin: 0 auto 10px;
+      max-width: 900px;
+      font-family: 'Pompiere', 'Trebuchet MS', sans-serif;
+      font-size: clamp(1.22rem, 1.85vw, 1.72rem);
+      line-height: 1.32;
+      color: #8f69aa;
+    }
+
+    .gift-banner__script{
+      font-family: 'Handsome', 'LianaRegular', cursive;
+      font-size: 1.02em;
+      white-space: nowrap;
+    }
+
+    .gift-banner__verse{
+      margin: 20px auto 0;
+      max-width: 980px;
+      font-family: 'Pompiere', 'Trebuchet MS', sans-serif;
+      font-size: clamp(.86rem, 1.08vw, 1.05rem);
+      line-height: 1.25;
+      color: rgba(143, 105, 170, .78);
+    }
+
+    .gift-banner__seal{
+      position: absolute;
+      right: 18px;
+      bottom: 12px;
+      width: clamp(48px, 6vw, 78px);
+      height: auto;
+      opacity: .9;
+      pointer-events: none;
+    }
+
+    .gift-embed{
+      width: calc(100% + 32px);
+      min-height: 820px;
+      border: 0;
+      border-radius: 0;
+      display: block;
+      overflow: hidden;
+      background: rgba(255,255,255,.03);
+      margin: 0 -16px -16px;
+      transform: none;
+    }
+
+    .contrib-section{
+      margin-top: 22px;
+    }
+
+    .contrib-card{
+      background: rgba(0,0,0,.26);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .contrib-header{
+      padding: 26px 22px 18px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .contrib-eyebrow{
+      display: block;
+      margin-bottom: 8px;
+      font-size: .82rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .contrib-title{
+      margin: 0;
+      font-family: 'BrownSugar', serif;
+      font-weight: normal;
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      line-height: .95;
+      color: var(--text);
+    }
+
+    .contrib-text{
+      max-width: 760px;
+      margin: 12px auto 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .contrib-grid{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .contrib-method{
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 18px;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contrib-method__title{
+      margin: 0;
+      font-size: 1.18rem;
+      color: var(--text);
+    }
+
+    .contrib-method__desc{
+      margin: 0;
+      color: var(--muted);
+      font-size: .98rem;
+      line-height: 1.42;
+    }
+
+    .contrib-placeholder{
+      flex: 1;
+      min-height: 140px;
+      border: 1px dashed rgba(255,255,255,.18);
+      border-radius: 14px;
+      background: rgba(255,255,255,.03);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 16px;
+      color: rgba(255,251,242,.72);
+      font-size: .95rem;
+    }
+
+    .contrib-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .contrib-btn{
+      appearance: none;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: .95rem;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .contrib-note{
+      padding: 0 22px 22px;
+      color: rgba(255,251,242,.62);
+      font-size: .9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 520px){
+      .section-banner{
+        width: calc(100% + 32px);
+        margin: -16px -16px 0;
+        min-height: 250px;
+        padding: 24px 16px 20px;
+      }
+
+      .contrib-header{
+        padding: 22px 16px 16px;
+      }
+
+      .contrib-title{
+        font-size: 2.1rem;
+      }
+
+      .contrib-text{
+        font-size: .96rem;
+      }
+
+      .contrib-grid{
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+
+      .contrib-method{
+        min-height: 250px;
+        padding: 16px;
+      }
+
+      .gift-banner__title{
+        font-size: 2.28rem;
+      }
+
+      .gift-banner__line{
+        font-size: 1.16rem;
+        line-height: 1.24;
+      }
+
+      .gift-banner__verse{
+        font-size: .84rem;
+        line-height: 1.22;
+      }
+
+      .gift-banner__seal{
+        width: 54px;
+        right: 10px;
+        bottom: 10px;
+      }
+
+      .gift-embed{
+        min-height: 760px;
+        transform: none;
+      }
     }
 
     .h2{
@@ -444,11 +735,7 @@
 
 <body>
   <!-- PRIMEIRO ITEM: a foto do Save the Date ocupando a primeira tela -->
-  <header class="hero" aria-label="Capa do casamento">
-    <div class="hero__media" aria-hidden="true">
-      <img class="hero__img" src="src/bg.png" alt="Save the Date" />
-    </div>
-
+    <header class="hero" aria-label="Capa do casamento">
     <div class="hero-overlay" aria-hidden="true">
       <div class="hero-logo">
         <img src="src/Logo_negativo.png" alt="João e Larissa - Logo do casamento" />
@@ -544,7 +831,100 @@
         </div>
       </section>
     </div>
+  <!-- REMOVED </section> here to unify overlay with #presentes -->
+
+  <div class="wrap">
+    <section class="section reveal" id="presentes">
+      <div class="card gift-card">
+        <div class="section-banner">
+          <div class="gift-banner">
+            <h2 class="gift-banner__title">Quer nos ajudar?</h2>
+
+            <p class="gift-banner__line">
+              Pensamos em uma forma <span class="gift-banner__script">diferente</span> e <span class="gift-banner__script">divertida</span> de montar nossa lista de presentes!
+            </p>
+
+            <p class="gift-banner__line">
+              Essas são opções simbólicas e brincadeiras para que vocês possam participar desse momento conosco,
+              <br />
+              com pequenas contribuições e experiências no nosso grande dia.
+            </p>
+
+            <p class="gift-banner__line">
+              Mais do que qualquer <span class="gift-banner__script">presente</span>, o que realmente importa para nós é celebrar esse momento ao seu lado.
+            </p>
+
+            <p class="gift-banner__verse">
+              “Se vocês obedecerem aos mandamentos que hoje lhes dou, amando o Senhor, seu Deus, e servindo-o de todo o coração e de toda a alma,
+              então Ele enviará chuva na estação certa, a chuva do outono e a da primavera, para que colham trigo, vinho novo e azeite.”
+              Deuteronômio 11:13-14
+            </p>
+
+            <img class="gift-banner__seal" src="src/Logo_negativo.png" alt="Monograma João e Larissa" />
+          </div>
+        </div>
+
+        <iframe
+          class="gift-embed"
+          src="https://site.lejour.com.br/lista-de-presentes/joao-e-larissa?targetLanguage=PT#gift-list"
+          title="Lista de presentes João e Larissa"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap contrib-section">
+    <section class="section reveal" id="contribuicao-direta">
+      <div class="contrib-card">
+        <div class="contrib-header">
+          <span class="contrib-eyebrow">Contribuição direta</span>
+          <h2 class="contrib-title">Prefere nos presentear de outra forma?</h2>
+          <p class="contrib-text">
+            Além da nossa lista de presentes, também vamos deixar disponível uma opção de contribuição direta para quem achar mais prático.
+            Depois a gente preenche aqui com Pix, link de pagamento e as instruções certinhas.
+          </p>
+        </div>
+
+        <div class="contrib-grid">
+          <article class="contrib-method">
+            <h3 class="contrib-method__title">Pix</h3>
+            <p class="contrib-method__desc">
+              Espaço reservado para chave Pix, QR Code e botão de copiar.
+            </p>
+            <div class="contrib-placeholder">
+              QR Code / chave Pix / botão “Copiar chave”
+            </div>
+            <div class="contrib-actions">
+              <button class="contrib-btn" type="button">Copiar chave</button>
+              <button class="contrib-btn" type="button">Abrir Pix</button>
+            </div>
+          </article>
+
+          <article class="contrib-method">
+            <h3 class="contrib-method__title">Cartão</h3>
+            <p class="contrib-method__desc">
+              Espaço reservado para link de pagamento, checkout ou botão para contribuir com cartão.
+            </p>
+            <div class="contrib-placeholder">
+              Botão de pagamento / instrução rápida / taxa (se houver)
+            </div>
+            <div class="contrib-actions">
+              <button class="contrib-btn" type="button">Contribuir com cartão</button>
+            </div>
+          </article>
+        </div>
+
+        <p class="contrib-note">
+          Depois a gente pode decidir juntos a ordem final, os textos e como deixar essa parte mais elegante e natural dentro do site.
+        </p>
+      </div>
+    </section>
+  </div>
   </section>
+
 
   <script>
     // Scroll effect 1: Parallax suave no hero (imagem acompanha a rolagem)
